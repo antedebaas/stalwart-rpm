@@ -1,0 +1,16 @@
+[Unit]
+Description=Stalwart mail server
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/bin/stalwart --config /etc/stalwart/config.json
+User=stalwart
+Group=stalwart
+Restart=on-failure
+
+# Grant capability to bind to privileged ports (< 1024) without running as root
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target
