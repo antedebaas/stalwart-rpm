@@ -91,12 +91,13 @@ source "$HOME/.cargo/env"
 
 # Set build environment for optimal compilation
 export CARGO_TARGET_DIR=%{_builddir}/%{name}-%{version}/target
-export RUSTFLAGS="-Ccodegen-units=1 -Clink-dead-code=off"
+export RUSTFLAGS="$(cat %{_builddir}/flags.txt)"
 
 # Ensure we have a proper Cargo.lock
 [ -f Cargo.lock ] || cargo generate-lockfile
 
-RUSTFLAGS="$(cat %{_builddir}/flags.txt)" cargo build --target "$(cat %{_builddir}/target.txt)" cargo build --release -p stalwart --no-default-features --features "sqlite postgres mysql rocks s3 redis azure nats enterprise"
+# Build the release binary
+cargo build --release -p stalwart --no-default-features --features "sqlite postgres mysql rocks s3 redis azure nats enterprise"
 
 %pre
 getent group %{name} >/dev/null || groupadd -r %{name}
