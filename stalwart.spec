@@ -29,7 +29,7 @@ fi \
 License:        MIT
 URL:            https://github.com/stalwartlabs/%{name}
 Source0:        https://github.com/stalwartlabs/%{name}/archive/refs/tags/v%{version}.tar.gz
-Source1:        https://forgejo.home.debaas.net/ante/stalwart-rpm/v%{packageversion}.tar.gz
+Source1:        https://forgejo.home.debaas.net/ante/stalwart-rpm/archive/v%{packageversion}.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
