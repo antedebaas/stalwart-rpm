@@ -1,0 +1,6 @@
+{
+  "@type": "Sqlite",
+  "path": "/var/lib/stalwart-mail/data/stalwart.db",
+  "poolMaxConnections": 10,
+  "poolWorkers": null
+}

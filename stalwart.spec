@@ -112,12 +112,20 @@ install -d -m 755 %{buildroot}%{_sharedstatedir}/%{name}/data
 install -d -m 755 %{buildroot}%{_sharedstatedir}/%{name}/dumps
 install -d -m 755 %{buildroot}%{_sharedstatedir}/%{name}/snapshots
 install -d -m 755 %{buildroot}%{_var}/log/%{name}
+install -d -m 755 %{buildroot}%{_docdir}/%{name}
 
 # Install binary
 install -D -m 755 %{_builddir}/%{name}-%{version}/target/release/%{name} %{buildroot}%{_bindir}/%{name}
 
-# Install config file
-install -D -m 644 %{_builddir}/stalwart-rpm/configs/%{name}.json %{buildroot}%{_sysconfdir}/%{name}/config.json
+# Install README in config directory
+install -D -m 644 %{_builddir}/stalwart-rpm/README.configs.md %{buildroot}%{_sysconfdir}/%{name}/README.md
+
+# Install example configuration files
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.postgres.json %{buildroot}%{_docdir}/%{name}/%{name}.postgres.json
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.rocksdb.json %{buildroot}%{_docdir}/%{name}/%{name}.rocksdb.json
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.sqlite.json %{buildroot}%{_docdir}/%{name}/%{name}.sqlite.json
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.mysql.json %{buildroot}%{_docdir}/%{name}/%{name}.mysql.json
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.foundationdb.json %{buildroot}%{_docdir}/%{name}/%{name}.foundationdb.json
 
 # Install systemd service
 install -D -m 644 %{_builddir}/stalwart-rpm/configs/%{name}.service %{buildroot}%{_unitdir}/%{name}.service
@@ -126,8 +134,10 @@ install -D -m 644 %{_builddir}/stalwart-rpm/configs/%{name}.service %{buildroot}
 # Set ownership of data directory
 chown -R %{name}:%{name} %{_sharedstatedir}/%{name}
 chown %{name}:%{name} %{_sysconfdir}/%{name}
-chown %{name}:%{name} %{_sysconfdir}/%{name}/config.json
 chown %{name}:%{name} %{_var}/log/%{name}
+if [ ! -f /etc/stalwart/config.json ]; then
+    echo "No configuration file found. Please copy an example from /usr/share/doc/stalwart/ to /etc/stalwart/config.json" > /etc/stalwart/config.json.readme
+fi
 
 %systemd_post %{name}.service
 
@@ -144,8 +154,14 @@ chown %{name}:%{name} %{_var}/log/%{name}
 %dir %attr(0755,%{name},%{name}) %{_sharedstatedir}/%{name}/data
 %dir %attr(0755,%{name},%{name}) %{_sharedstatedir}/%{name}/dumps
 %dir %attr(0755,%{name},%{name}) %{_sharedstatedir}/%{name}/snapshots
-%config(noreplace) %attr(0644,%{name},%{name}) %{_sysconfdir}/%{name}/config.json
+%attr(0644,root,root) %{_sysconfdir}/%{name}/README.md
+%ghost %config(noreplace) %attr(0644,%{name},%{name}) %{_sysconfdir}/%{name}/config.json
 %{_unitdir}/%{name}.service
+%doc %{_docdir}/%{name}/%{name}.postgres.json
+%doc %{_docdir}/%{name}/%{name}.rocksdb.json
+%doc %{_docdir}/%{name}/%{name}.sqlite.json
+%doc %{_docdir}/%{name}/%{name}.mysql.json
+%doc %{_docdir}/%{name}/%{name}.foundationdb.json
 
 %changelog
 * Wed May 27 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.6-3

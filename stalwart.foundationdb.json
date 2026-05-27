@@ -1,0 +1,12 @@
+{
+  "@type": "FoundationDb",
+  "clusterFile": "/etc/foundationdb/fdb.cluster",
+  "timeout": 5000,
+  "idleTimeout": 300000,
+  "maxRetryDelay": 1000,
+  "transactionRetryLimit": null,
+  "transactionTimeout": null,
+  "transactionMaxRetryDelay": null,
+  "machineId": null,
+  "datacenterId": null
+}

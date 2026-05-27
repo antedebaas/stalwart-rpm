@@ -1,0 +1,19 @@
+{
+  "@type": "MySql",
+  "timeout": 15000,
+  "useTls": false,
+  "allowInvalidCerts": false,
+  "poolMaxConnections": 10,
+  "poolMinConnections": null,
+  "poolRecyclingMethod": "fast",
+  "readReplicas": {},
+  "host": "127.0.0.1",
+  "port": 3306,
+  "database": "stalwart",
+  "authUsername": "stalwart",
+  "authSecret": {
+    "@type": "Value",
+    "secret": "__STALWART_DB_SECRET__"
+  },
+  "options": null
+}

@@ -1,0 +1,7 @@
+{
+  "@type": "RocksDb",
+  "path": "/var/lib/stalwart-mail/data",
+  "blobSize": 16384,
+  "bufferSize": 134217728,
+  "poolWorkers": null
+}
