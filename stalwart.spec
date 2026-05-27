@@ -129,7 +129,7 @@ install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.mysql.json %{buildroot}%{_do
 install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.foundationdb.json %{buildroot}%{_docdir}/%{name}/%{name}.foundationdb.json
 
 # Install systemd service
-install -D -m 644 %{_builddir}/stalwart-rpm/configs/%{name}.service %{buildroot}%{_unitdir}/%{name}.service
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.service %{buildroot}%{_unitdir}/%{name}.service
 
 %post
 # Set ownership of data directory
