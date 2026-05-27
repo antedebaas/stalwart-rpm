@@ -117,10 +117,10 @@ install -d -m 755 %{buildroot}%{_var}/log/%{name}
 install -D -m 755 %{_builddir}/%{name}-%{version}/target/release/%{name} %{buildroot}%{_bindir}/%{name}
 
 # Install config file
-install -D -m 644 %{_builddir}/epgn-environment/configs/%{name}.json %{buildroot}%{_sysconfdir}/%{name}/config.json
+install -D -m 644 %{_builddir}/stalwart-rpm/configs/%{name}.json %{buildroot}%{_sysconfdir}/%{name}/config.json
 
 # Install systemd service
-install -D -m 644 %{_builddir}/epgn-environment/configs/%{name}.service %{buildroot}%{_unitdir}/%{name}.service
+install -D -m 644 %{_builddir}/stalwart-rpm/configs/%{name}.service %{buildroot}%{_unitdir}/%{name}.service
 
 %post
 # Set ownership of data directory
