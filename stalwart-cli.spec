@@ -1,5 +1,5 @@
 Name:           stalwart-cli
-Version:        1.0.7
+Version:        1.0.8
 Release:        1%{?dist}
 Summary:        Command line tool for administering Stalwart Mail Server over JMAP API
 
