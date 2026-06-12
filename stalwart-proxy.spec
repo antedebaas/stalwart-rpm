@@ -85,6 +85,9 @@ if [ -f resources/migrate_v015_to_plan.py ]; then
     install -D -m 644 resources/migrate_v015_to_plan.py %{buildroot}%{_docdir}/%{name}/migrate_v015_to_plan.py
 fi
 
+# Ensure doc directory exists even if no extra files
+mkdir -p %{buildroot}%{_docdir}/%{name}
+
 %pre
 # Create stalwart-proxy user and group
 getent group stalwart-proxy >/dev/null || groupadd -r stalwart-proxy
@@ -104,10 +107,10 @@ exit 0
 
 %files
 %{_bindir}/%{name}
-%{_unitdir}/%{name}.service
+/usr/lib/systemd/system/%{name}.service
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/config.toml
-%{_docdir}/%{name}/
+%dir %{_docdir}/%{name}
 %license LICENSES/*
 %doc README.md CHANGELOG.md
 
