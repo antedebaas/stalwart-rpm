@@ -71,12 +71,19 @@ install -D -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
 # Install example configuration
 install -D -m 644 resources/config.sample.toml %{buildroot}%{_sysconfdir}/%{name}/config.toml
 
-# Install documentation files
-install -D -m 644 resources/config.sample.toml %{buildroot}%{_docdir}/%{name}/config.sample.toml
-install -D -m 644 resources/config.dovecot-postfix.toml %{buildroot}%{_docdir}/%{name}/config.dovecot-postfix.toml
-install -D -m 644 resources/config.stalwart-upgrade.toml %{buildroot}%{_docdir}/%{name}/config.stalwart-upgrade.toml
-install -D -m 644 resources/dovecot-postfix-trust.conf %{buildroot}%{_docdir}/%{name}/dovecot-postfix-trust.conf
-install -D -m 644 resources/migrate_v015_to_plan.py %{buildroot}%{_docdir}/%{name}/migrate_v015_to_plan.py
+# Install documentation files (if they exist)
+if [ -f resources/config.dovecot-postfix.toml ]; then
+    install -D -m 644 resources/config.dovecot-postfix.toml %{buildroot}%{_docdir}/%{name}/config.dovecot-postfix.toml
+fi
+if [ -f resources/config.stalwart-upgrade.toml ]; then
+    install -D -m 644 resources/config.stalwart-upgrade.toml %{buildroot}%{_docdir}/%{name}/config.stalwart-upgrade.toml
+fi
+if [ -f resources/dovecot-postfix-trust.conf ]; then
+    install -D -m 644 resources/dovecot-postfix-trust.conf %{buildroot}%{_docdir}/%{name}/dovecot-postfix-trust.conf
+fi
+if [ -f resources/migrate_v015_to_plan.py ]; then
+    install -D -m 644 resources/migrate_v015_to_plan.py %{buildroot}%{_docdir}/%{name}/migrate_v015_to_plan.py
+fi
 
 %pre
 # Create stalwart-proxy user and group
@@ -100,11 +107,7 @@ exit 0
 %{_unitdir}/%{name}.service
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/config.toml
-%{_docdir}/%{name}/config.sample.toml
-%{_docdir}/%{name}/config.dovecot-postfix.toml
-%{_docdir}/%{name}/config.stalwart-upgrade.toml
-%{_docdir}/%{name}/dovecot-postfix-trust.conf
-%{_docdir}/%{name}/migrate_v015_to_plan.py
+%{_docdir}/%{name}/
 %license LICENSES/*
 %doc README.md CHANGELOG.md
 
