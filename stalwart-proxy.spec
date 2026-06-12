@@ -6,6 +6,7 @@ Summary:        Multi-protocol e-mail migration proxy
 License:        AGPL-3.0-only OR LicenseRef-SEL
 URL:            https://github.com/stalwartlabs/proxy
 Source0:        https://github.com/stalwartlabs/proxy/archive/refs/tags/v%{version}.tar.gz
+Source1:        stalwart-proxy.service
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -27,6 +28,10 @@ ExcludeArch:    i686 s390 %{power64}
 %global debug_package %{nil}
 
 Requires:       glibc
+Requires(pre):  shadow-utils
+Requires(post): systemd
+Requires(preun): systemd
+Requires(postun): systemd
 
 %description
 The migration proxy sits in front of one or more mail backends and decides,
@@ -61,11 +66,52 @@ cargo build --release --verbose --locked
 # Install binary
 install -D -m 755 %{_builddir}/cli-%{version}/target/release/%{name} %{buildroot}%{_bindir}/%{name}
 
+# Install systemd service file
+install -D -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
+
+# Install example configuration
+install -D -m 644 resources/config.sample.toml %{buildroot}%{_sysconfdir}/%{name}/config.toml
+
+# Install documentation files
+install -D -m 644 resources/config.sample.toml %{buildroot}%{_docdir}/%{name}/config.sample.toml
+install -D -m 644 resources/config.dovecot-postfix.toml %{buildroot}%{_docdir}/%{name}/config.dovecot-postfix.toml
+install -D -m 644 resources/config.stalwart-upgrade.toml %{buildroot}%{_docdir}/%{name}/config.stalwart-upgrade.toml
+install -D -m 644 resources/dovecot-postfix-trust.conf %{buildroot}%{_docdir}/%{name}/dovecot-postfix-trust.conf
+install -D -m 644 resources/migrate_v015_to_plan.py %{buildroot}%{_docdir}/%{name}/migrate_v015_to_plan.py
+
+%pre
+# Create stalwart-proxy user and group
+getent group stalwart-proxy >/dev/null || groupadd -r stalwart-proxy
+getent passwd stalwart-proxy >/dev/null || \
+    useradd -r -g stalwart-proxy -d /var/lib/stalwart-proxy -s /sbin/nologin \
+    -c "Stalwart Proxy service account" stalwart-proxy
+exit 0
+
+%post
+%systemd_post %{name}.service
+
+%preun
+%systemd_preun %{name}.service
+
+%postun
+%systemd_postun_with_restart %{name}.service
+
 %files
 %{_bindir}/%{name}
+%{_unitdir}/%{name}.service
+%dir %{_sysconfdir}/%{name}
+%config(noreplace) %{_sysconfdir}/%{name}/config.toml
+%{_docdir}/%{name}/config.sample.toml
+%{_docdir}/%{name}/config.dovecot-postfix.toml
+%{_docdir}/%{name}/config.stalwart-upgrade.toml
+%{_docdir}/%{name}/dovecot-postfix-trust.conf
+%{_docdir}/%{name}/migrate_v015_to_plan.py
 %license LICENSES/*
 %doc README.md CHANGELOG.md
 
 %changelog
-* Thu May 14 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.6-1
-- Initial package for Stalwart CLI tool
+* Fri Jun 12 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.0-1
+- Initial package for Stalwart Proxy
+- Added systemd service file
+- Added example configurations and documentation
+- Created stalwart-proxy user and group
