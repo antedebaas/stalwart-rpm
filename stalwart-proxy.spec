@@ -90,7 +90,7 @@ AmbientCapabilities=CAP_NET_BIND_SERVICE
 [Install]
 WantedBy=multi-user.target
 EOF
-install -D -m 644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
+install -D -m 644 %{name}.service %{buildroot}/usr/lib/systemd/system/%{name}.service
 
 # Install example configuration
 install -D -m 644 resources/config.sample.toml %{buildroot}%{_sysconfdir}/%{name}/config.toml
