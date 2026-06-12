@@ -6,7 +6,6 @@ Summary:        Multi-protocol e-mail migration proxy
 License:        AGPL-3.0-only OR LicenseRef-SEL
 URL:            https://github.com/stalwartlabs/proxy
 Source0:        https://github.com/stalwartlabs/proxy/archive/refs/tags/v%{version}.tar.gz
-Source1:        stalwart-proxy.service
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -65,8 +64,33 @@ cargo build --release --verbose --locked
 # Install binary (built as 'proxy' but installed as 'stalwart-proxy')
 install -D -m 755 target/release/proxy %{buildroot}%{_bindir}/%{name}
 
-# Install systemd service file
-install -D -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
+# Create and install systemd service file
+cat > %{name}.service << 'EOF'
+[Unit]
+Description=Stalwart Proxy - Multi-protocol e-mail migration proxy
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/stalwart-proxy --config /etc/stalwart-proxy/config.toml
+User=stalwart-proxy
+Group=stalwart-proxy
+Restart=on-failure
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log/stalwart-proxy
+
+# Grant capability to bind to privileged ports (< 1024) without running as root
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target
+EOF
+install -D -m 644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
 
 # Install example configuration
 install -D -m 644 resources/config.sample.toml %{buildroot}%{_sysconfdir}/%{name}/config.toml
