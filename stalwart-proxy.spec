@@ -53,7 +53,6 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source "$HOME/.cargo/env"
 
 # Set build environment for optimal compilation
-export CARGO_TARGET_DIR=%{_builddir}/proxy-%{version}/target
 export RUSTFLAGS="-Ccodegen-units=1"
 
 # Ensure we have a proper Cargo.lock
@@ -63,8 +62,8 @@ export RUSTFLAGS="-Ccodegen-units=1"
 cargo build --release --verbose --locked
 
 %install
-# Install binary
-install -D -m 755 %{_builddir}/proxy-%{version}/target/release/%{name} %{buildroot}%{_bindir}/%{name}
+# Install binary (built as 'proxy' but installed as 'stalwart-proxy')
+install -D -m 755 target/release/proxy %{buildroot}%{_bindir}/%{name}
 
 # Install systemd service file
 install -D -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
