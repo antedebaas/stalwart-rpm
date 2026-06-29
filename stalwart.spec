@@ -1,5 +1,5 @@
 Name:           stalwart
-Version:        0.16.10
+Version:        0.16.11
 Release:        1%{?dist}
 Summary:        All-in-one Mail & Collaboration server. Secure, scalable and fluent in every protocol (IMAP, JMAP, SMTP, CalDAV, CardDAV, WebDAV).
 
