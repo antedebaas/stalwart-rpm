@@ -1,5 +1,5 @@
 Name:           stalwart-proxy
-Version:        1.0.0
+Version:        1.0.3
 Release:        1%{?dist}
 Summary:        Multi-protocol e-mail migration proxy
 
@@ -139,6 +139,9 @@ exit 0
 %doc README.md CHANGELOG.md
 
 %changelog
+* Wed Sep 02 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.3-1
+- bumped to 1.0.3 release
+
 * Fri Jun 12 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.0-1
 - Initial package for Stalwart Proxy
 - Added systemd service file

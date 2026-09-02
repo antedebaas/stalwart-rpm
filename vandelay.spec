@@ -1,5 +1,5 @@
 Name:           vandelay
-Version:        1.0.7
+Version:        1.0.10
 Release:        1%{?dist}
 Summary:        Vandelay: the JMAP importer-exporter (and backup tool)
 
@@ -62,6 +62,9 @@ install -D -m 755 %{_builddir}/%{name}-%{version}/target/release/%{name} %{build
 %doc README.md CHANGELOG.md
 
 %changelog
+* Wed Sep 02 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.10-1
+- bumped to 1.0.10 release
+
 * Tue Jul 28 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.7-1
 - bumped to 1.0.7 release
 
