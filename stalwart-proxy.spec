@@ -135,6 +135,10 @@ exit 0
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/config.toml
 %dir %{_docdir}/%{name}
+%doc %{_docdir}/%{name}/config.dovecot-postfix.toml
+%doc %{_docdir}/%{name}/config.stalwart-upgrade.toml
+%doc %{_docdir}/%{name}/dovecot-postfix-trust.conf
+%doc %{_docdir}/%{name}/migrate_v015_to_plan.py
 %license LICENSES/*
 %doc README.md CHANGELOG.md
 
