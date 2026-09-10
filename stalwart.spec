@@ -1,5 +1,5 @@
 Name:           stalwart
-Version:        0.16.20
+Version:        0.16.21
 Release:        1%{?dist}
 Summary:        All-in-one Mail & Collaboration server. Secure, scalable and fluent in every protocol (IMAP, JMAP, SMTP, CalDAV, CardDAV, WebDAV).
 
@@ -165,6 +165,9 @@ fi
 %doc %{_docdir}/%{name}/%{name}.foundationdb.json
 
 %changelog
+* Thu Sep 10 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.21-1
+- bumped to 0.16.21 release
+
 * Wed Sep 02 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.20-1
 - bumped to 0.16.20 release
 
