@@ -1,5 +1,5 @@
 Name:           stalwart-proxy
-Version:        1.0.3
+Version:        1.0.4
 Release:        1%{?dist}
 Summary:        Multi-protocol e-mail migration proxy
 
