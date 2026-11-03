@@ -1,6 +1,6 @@
 Name:           stalwart-server
 %global app_name stalwart
-Version:        0.16.27
+Version:        1.0.0
 Release:        1%{?dist}
 Summary:        All-in-one Mail & Collaboration server. Secure, scalable and fluent in every protocol (IMAP, JMAP, SMTP, CalDAV, CardDAV, WebDAV).
 
@@ -95,14 +95,6 @@ source "$HOME/.cargo/env"
 # Set build environment for optimal compilation
 export CARGO_TARGET_DIR=%{_builddir}/%{app_name}-%{version}/target
 export RUSTFLAGS="$(cat %{_builddir}/flags.txt)"
-
-# Patch removed stalwartlabs/opentelemetry-rust repo to vennyx-org fork
-# Only apply for versions below 1.0.0
-%if %{expr: v"%{version}" < v"1.0.0"}
-find . -name Cargo.lock -exec sed -i \
-  -e 's|stalwartlabs/opentelemetry-rust|vennyx-org/opentelemetry-rust|g' \
-  {} +
-%endif
 
 # Build the release binary
 cargo build --release -p stalwart --no-default-features --features "sqlite postgres mysql rocks s3 redis azure nats enterprise"
