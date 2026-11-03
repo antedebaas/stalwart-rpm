@@ -83,6 +83,13 @@ All-in-one Mail & Collaboration server. Secure, scalable and fluent in every pro
 
 %prep
 %autosetup -n %{name}-%{version}
+
+# Patch removed stalwartlabs/opentelemetry-rust repo to vennyx-org fork
+# Only apply for versions below 1.0.0
+%if 0%{version_lt:1.0.0}
+find . -name Cargo.lock -exec sed -i 's|git+https://github.com/stalwartlabs/opentelemetry-rust|git+https://github.com/vennyx-org/opentelemetry-rust|g' {} +
+%endif
+
 tar -xzf %{SOURCE1} -C %{_builddir}
 
 %build
@@ -167,6 +174,7 @@ fi
 %changelog
 * Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.27-1
 - bumped to 0.16.27 release
+- patched removed stalwartlabs/opentelemetry-rust git repo to vennyx-org fork
 
 * Wed Oct 14 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.26-1
 - bumped to 0.16.26 release
