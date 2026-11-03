@@ -9,11 +9,31 @@ Source0:        https://github.com/stalwartlabs/stalwart-migrate/archive/refs/ta
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
+BuildRequires:  glibc-devel
 BuildRequires:  openssl-devel
+# systemd-rpm-macros not available on openEuler
+%if 0%{?fedora} || 0%{?rhel} >= 9
+BuildRequires:  systemd-rpm-macros
+%endif
 BuildRequires:  pkgconfig(openssl)
+BuildRequires:  make cmake
+BuildRequires:  git
+BuildRequires:  curl libcurl-devel
 BuildRequires:  cargo
-BuildRequires:  curl
-BuildRequires:  libclang-devel
+# Different distributions have different clang package names
+%if 0%{?suse_version}
+# openSUSE/SUSE
+BuildRequires:  clang-devel
+BuildRequires:  llvm-devel
+%else
+%if 0%{?fedora} && 0%{?fedora} >= 36 && !0%{?mageia} && !0%{?mgaversion}
+# Fedora 36+ has versioned clang packages (but not Mageia or derivatives)
+BuildRequires:  clang19-devel clang19-libs
+%else
+# RHEL, AlmaLinux, Rocky, openEuler, Mageia, etc.
+BuildRequires:  clang-devel
+%endif
+%endif
 
 # Only build on supported architectures for Rust
 ExcludeArch:    i686 s390 %{power64}
