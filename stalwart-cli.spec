@@ -1,5 +1,5 @@
 Name:           stalwart-cli
-Version:        1.0.13
+Version:        1.0.14
 Release:        1%{?dist}
 Summary:        Command line tool for administering Stalwart Mail Server over JMAP API
 
@@ -62,6 +62,9 @@ install -D -m 755 %{_builddir}/cli-%{version}/target/release/%{name} %{buildroot
 %doc README.md CHANGELOG.md
 
 %changelog
+* Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.14-1
+- bumped to 1.0.14 release
+
 * Sun Oct 11 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.13-1
 - bumped to 1.0.13 release
 

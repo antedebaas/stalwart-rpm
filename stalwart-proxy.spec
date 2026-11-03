@@ -1,5 +1,5 @@
 Name:           stalwart-proxy
-Version:        1.0.4
+Version:        1.0.5
 Release:        1%{?dist}
 Summary:        Multi-protocol e-mail migration proxy
 
@@ -143,6 +143,9 @@ exit 0
 %doc README.md CHANGELOG.md
 
 %changelog
+* Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.5-1
+- bumped to 1.0.5 release
+
 * Wed Sep 02 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.3-1
 - bumped to 1.0.3 release
 
