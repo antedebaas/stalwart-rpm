@@ -13,6 +13,7 @@ BuildRequires:  openssl-devel
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  cargo
 BuildRequires:  curl
+BuildRequires:  libclang-devel
 
 # Only build on supported architectures for Rust
 ExcludeArch:    i686 s390 %{power64}
