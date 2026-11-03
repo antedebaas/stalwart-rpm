@@ -1,5 +1,4 @@
 Name:           stalwart-vandelay
-OldName:        vandelay
 Version:        1.0.14
 Release:        1%{?dist}
 Summary:        Vandelay: the JMAP importer-exporter (and backup tool)
