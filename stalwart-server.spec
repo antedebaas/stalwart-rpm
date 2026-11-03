@@ -86,12 +86,6 @@ All-in-one Mail & Collaboration server. Secure, scalable and fluent in every pro
 %prep
 %autosetup -n %{app_name}-%{version}
 
-# Patch removed stalwartlabs/opentelemetry-rust repo to vennyx-org fork
-# Only apply for versions below 1.0.0
-%if %{expr: v"%{version}" < v"1.0.0"}
-find . -name Cargo.lock -exec sed -i 's|git+https://github.com/stalwartlabs/opentelemetry-rust|git+https://github.com/vennyx-org/opentelemetry-rust|g' {} +
-%endif
-
 tar -xzf %{SOURCE1} -C %{_builddir}
 
 %build
@@ -104,6 +98,12 @@ export RUSTFLAGS="$(cat %{_builddir}/flags.txt)"
 
 # Ensure we have a proper Cargo.lock
 [ -f Cargo.lock ] || cargo generate-lockfile
+
+# Patch removed stalwartlabs/opentelemetry-rust repo to vennyx-org fork
+# Only apply for versions below 1.0.0
+%if %{expr: v"%{version}" < v"1.0.0"}
+find . -name Cargo.lock -exec sed -i 's|git+https://github.com/stalwartlabs/opentelemetry-rust|git+https://github.com/vennyx-org/opentelemetry-rust|g' {} +
+%endif
 
 # Build the release binary
 cargo build --release -p stalwart --no-default-features --features "sqlite postgres mysql rocks s3 redis azure nats enterprise"
