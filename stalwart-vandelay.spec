@@ -1,4 +1,5 @@
 Name:           stalwart-vandelay
+%global app_name vandelay
 Version:        1.0.14
 Release:        1%{?dist}
 Summary:        Vandelay: the JMAP importer-exporter (and backup tool)
@@ -37,14 +38,14 @@ range of source protocols into a local SQLite archive, then exports that
 archive into a target JMAP server. It doubles as a per-account backup tool.
 
 %prep
-%autosetup -n %{name}-%{version}
+%autosetup -n %{app_name}-%{version}
 
 %build
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source "$HOME/.cargo/env"
 
 # Set build environment for optimal compilation
-export CARGO_TARGET_DIR=%{_builddir}/%{name}-%{version}/target
+export CARGO_TARGET_DIR=%{_builddir}/%{app_name}-%{version}/target
 export RUSTFLAGS="-Ccodegen-units=1"
 
 # Ensure we have a proper Cargo.lock
@@ -55,10 +56,10 @@ cargo build --release --verbose --locked
 
 %install
 # Install binary
-install -D -m 755 %{_builddir}/%{name}-%{version}/target/release/%{name} %{buildroot}%{_bindir}/%{name}
+install -D -m 755 %{_builddir}/%{app_name}-%{version}/target/release/%{app_name} %{buildroot}%{_bindir}/%{app_name}
 
 %files
-%{_bindir}/%{name}
+%{_bindir}/%{app_name}
 %license LICENSES/*
 %doc README.md CHANGELOG.md
 
