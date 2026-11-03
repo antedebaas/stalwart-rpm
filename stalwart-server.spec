@@ -1,6 +1,6 @@
 Name:           stalwart-server
 %global app_name stalwart
-Version:        1.0.0
+Version:        1.0.2
 Release:        1%{?dist}
 Summary:        All-in-one Mail & Collaboration server. Secure, scalable and fluent in every protocol (IMAP, JMAP, SMTP, CalDAV, CardDAV, WebDAV).
 
