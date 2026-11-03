@@ -1,4 +1,5 @@
-Name:           stalwart
+Name:           stalwart-server
+OldName:        stalwart
 Version:        0.16.27
 Release:        1%{?dist}
 Summary:        All-in-one Mail & Collaboration server. Secure, scalable and fluent in every protocol (IMAP, JMAP, SMTP, CalDAV, CardDAV, WebDAV).
@@ -27,6 +28,7 @@ fi \
 %{nil}}
 
 License:        MIT
+Obsoletes:      stalwart < %{version}
 URL:            https://github.com/stalwartlabs/%{name}
 Source0:        https://github.com/stalwartlabs/%{name}/archive/refs/tags/v%{version}.tar.gz
 Source1:        https://github.com/antedebaas/stalwart-rpm/archive/v%{packageversion}.tar.gz
@@ -86,7 +88,7 @@ All-in-one Mail & Collaboration server. Secure, scalable and fluent in every pro
 
 # Patch removed stalwartlabs/opentelemetry-rust repo to vennyx-org fork
 # Only apply for versions below 1.0.0
-%if 0%{version_lt:1.0.0}
+%if %{expr: v"%{version}" < v"1.0.0"}
 find . -name Cargo.lock -exec sed -i 's|git+https://github.com/stalwartlabs/opentelemetry-rust|git+https://github.com/vennyx-org/opentelemetry-rust|g' {} +
 %endif
 
@@ -173,35 +175,34 @@ fi
 
 %changelog
 * Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.27-1
-- bumped to 0.16.27 release
-- patched removed stalwartlabs/opentelemetry-rust git repo to vennyx-org fork
+- Fixed: IMAP APPEND/COPY/MOVE and SEARCH RETURN behavior, iTIP VTIMEZONE merging, OAuth loopback URI matching, WebDAV PROPFIND allprop
 
 * Wed Oct 14 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.26-1
-- bumped to 0.16.26 release
+- Added: sd_notify support, JMAP mailbox operations; Fixed: DNSSEC resolver, RocksDB blob GC, milter end-of-headers, OIDC fallback to email claim, JMAP push notification and VacationResponse bugs
 
 * Sun Oct 11 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.25-1
-- bumped to 0.16.25 release
+- Fixed: JMAP MaskedEmail creation, IMAP auth error responses, DKIM key rotation, spam filter DNSBL scoring, RocksDB log rotation, MTA queue quota enforcement, WebUI blob store error handling
 
 * Sun Sep 13 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.22-1
-- bumped to 0.16.22 release
+- Fixed: WebDAV namespace declarations, MTA throttle expression evaluation, DMARC reporting, OIDC discovery retry on startup, Sieve fileinto ham classification, IMAP SELECT/EXAMINE ACL checks, OAuth empty key fallback, LDAP filter placeholder escaping, JMAP CalendarEvent/ContactCard get property handling
 
 * Thu Sep 10 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.21-1
-- bumped to 0.16.21 release
+- Fixed: JMAP CalendarEvent/set scheduling rejection, Calendar/AddressBook/get fallback properties, IMAP pipelined STATUS batch responses, WebDAV quota advertisement for accounts without quota, LDAP unauthenticated bind handling, OpenTelemetry log exporter span attributes
 
 * Wed Sep 02 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.20-1
-- bumped to 0.16.20 release
+- Added: SCIM v2 (Enterprise), CalendarEvent/set synthetic IDs, conference links in invites, 24 language translations; Fixed: DANE TLSA lookups, Redis sentinel TLS, cluster node lease cleanup, CardDAV default address book deletion
 
 * Tue Jul 28 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.15-1
-- bumped to 0.16.15 release
+- Fixed: Email/copy alreadyExists and onSuccessDestroyOriginal bugs, CalendarEvent/set uid and DTSTAMP generation, MTA-STS panic, VAPID key PEM format acceptance, cache shard discard causing rebuilds, registry id reference resolution, cluster broadcast re-subscription
 
 * Sat Jul 18 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.13-1
-- bumped to 0.16.13 release
+- Added: FreeBSD support, OAuth resource indicators for imap/smtp/pop3/sieve; Fixed: VacationResponse isEnabled reset, RFC-3339 UTCDate literals in capabilities, DNS CAA over-deletion, custom domain logos, Sieve Received header loop detection
 
 * Tue Jun 23 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.10-1
-- bumped to 0.16.10 release
+- Added: International Domain Names (IDN), OAuth Profile for Open Public Clients, IMAP Extension for Object Identifiers, GETJMAPACCESS command, HTTP redirectRoot, ACME reuseKey; Fixed: extensive JMAP conformance fixes (jmap-test-suite), DANE TLSA validation, RocksDB blob GC, Cache invalidation
 
 * Tue Jun 16 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.9-1
-- bumped to 0.16.9 release
+- Added: ACME preferred certificate chain; Fixed: JMAP */changes id leak for non-shared objects, FoundationDB read cache expiration, ACME certificate renewal freshness check, ACME DNS-01 sequential authorizations
 
 * Wed May 27 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.6-3
-- package following 0.16.6 release
+- Added: 58 new DNS provider integrations, DNS record logging, Sieve orcpt access, spam classifier logging; Fixed: DAV ACL privilege, IMAP UID FETCH missed messages, ACME defaultCertificateId renewal, Sieve replace extra From header, orphaned ACL JMAP session errors

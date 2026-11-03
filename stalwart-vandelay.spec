@@ -1,9 +1,11 @@
-Name:           vandelay
+Name:           stalwart-vandelay
+OldName:        vandelay
 Version:        1.0.14
 Release:        1%{?dist}
 Summary:        Vandelay: the JMAP importer-exporter (and backup tool)
 
 License:        Apache-2.0 OR MIT
+Obsoletes:      vandelay < %{version}
 URL:            https://github.com/stalwartlabs/vandelay
 Source0:        https://github.com/stalwartlabs/vandelay/archive/refs/tags/v%{version}.tar.gz
 
@@ -63,28 +65,28 @@ install -D -m 755 %{_builddir}/%{name}-%{version}/target/release/%{name} %{build
 
 %changelog
 * Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.14-1
-- bumped to 1.0.14 release
+- Static Dockerfile, HTTP request timeouts on all protocols, Google Takeout Brazilian label mapping and duplicate contact fixes
 
 * Wed Oct 14 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.12-1
-- bumped to 1.0.12 release
+- Parallel email export with server-batched batches, IMAP non-selectable parent folder fix, JMAP memory leak on large pages
 
 * Sun Oct 11 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.11-1
-- bumped to 1.0.11 release
+- Replaced base64 with encodify, IMAP Dovecot capability colon parsing fix
 
 * Wed Sep 02 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.10-1
-- bumped to 1.0.10 release
+- MS Exchange Graph OneDrive files, contact photos, event attachments import; various Graph bug fixes
 
 * Tue Jul 28 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.7-1
-- bumped to 1.0.7 release
+- Improved verbosity and error messages across WebDAV, IMAP, and JMAP importers
 
 * Sat Jul 18 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.6-1
-- bumped to 1.0.6 release
+- Self-heal on blobNotFound export errors, fix special mailbox mapping after alreadyExists response
 
 * Tue Jun 23 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.4-1
-- bumped to 1.0.4 release
+- Early release with foundational IMAP, JMAP, CalDAV/CardDAV, WebDAV, and Maildir import/export support
 
 * Tue Jun 16 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.3-1
-- bumped to 1.0.3 release
+- Early release with foundational IMAP, JMAP, CalDAV/CardDAV, WebDAV, and Maildir import/export support
 
 * Fri May 30 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.0-1
-- Initial package for Vandelay JMAP importer-exporter tool
+- Initial stable release of Vandelay JMAP importer-exporter and backup tool

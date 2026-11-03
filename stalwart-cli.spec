@@ -63,16 +63,16 @@ install -D -m 755 %{_builddir}/cli-%{version}/target/release/%{name} %{buildroot
 
 %changelog
 * Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.14-1
-- bumped to 1.0.14 release
+- `apply --progress` help text now mentions upsert and reconcile batch progress reporting
 
 * Sun Oct 11 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.13-1
-- bumped to 1.0.13 release
+- `apply` annotates server IDs in `set` errors with plan reference and replaces base64 with encodify
 
 * Tue Jul 28 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.12-1
-- bumped to 1.0.12 release
+- `upsert`/`reconcile` accept `scope`, `reconcile` adds exhaustive upsert+destroy, breaking: reject unknown top-level keys, many fixes
 
 * Sat Jul 18 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.10-1
-- bumped to 1.0.10 release
+- `upsert` removes required matchOn field
 
 * Thu May 14 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.6-1
-- Initial package for Stalwart CLI tool
+- Adds `--debug` flag for HTTP logging, improves schema cache resilience and error messages

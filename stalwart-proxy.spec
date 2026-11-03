@@ -144,10 +144,12 @@ exit 0
 
 %changelog
 * Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.5-1
-- bumped to 1.0.5 release
+- Replaced base64 with encodify, honored HTTP route fallbacks, improved login
+delay resolution via cache invalidate endpoints, and fixed sample config
+startup validation
 
 * Wed Sep 02 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.3-1
-- bumped to 1.0.3 release
+- Fixed IMAP authentication replay for backends not advertising SASL-IR
 
 * Fri Jun 12 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.0-1
 - Initial package for Stalwart Proxy
