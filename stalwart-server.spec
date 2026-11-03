@@ -96,13 +96,12 @@ source "$HOME/.cargo/env"
 export CARGO_TARGET_DIR=%{_builddir}/%{app_name}-%{version}/target
 export RUSTFLAGS="$(cat %{_builddir}/flags.txt)"
 
-# Ensure we have a proper Cargo.lock
-[ -f Cargo.lock ] || cargo generate-lockfile
-
 # Patch removed stalwartlabs/opentelemetry-rust repo to vennyx-org fork
 # Only apply for versions below 1.0.0
 %if %{expr: v"%{version}" < v"1.0.0"}
-find . -name Cargo.lock -exec sed -i 's|git+https://github.com/stalwartlabs/opentelemetry-rust|git+https://github.com/vennyx-org/opentelemetry-rust|g' {} +
+find . -name Cargo.lock -exec sed -i \
+  -e 's|stalwartlabs/opentelemetry-rust|vennyx-org/opentelemetry-rust|g' \
+  {} +
 %endif
 
 # Build the release binary
