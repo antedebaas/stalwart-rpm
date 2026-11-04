@@ -28,7 +28,7 @@ fi \
 License:        MIT
 URL:            https://github.com/stalwartlabs/%{app_name}
 Source0:        https://github.com/stalwartlabs/%{app_name}/archive/refs/tags/v%{version}.tar.gz
-Source1:        https://github.com/antedebaas/stalwart-rpm/archive/main.tar.gz
+Source1:        https://github.com/antedebaas/stalwart-rpm-main/archive/main.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -116,17 +116,17 @@ install -d -m 755 %{buildroot}%{_docdir}/%{app_name}
 install -D -m 755 %{_builddir}/%{app_name}-%{version}/target/release/%{app_name} %{buildroot}%{_bindir}/%{app_name}
 
 # Install README in config directory
-install -D -m 644 %{_builddir}/stalwart-rpm/README.configs.md %{buildroot}%{_sysconfdir}/%{app_name}/README.md
+install -D -m 644 %{_builddir}/stalwart-rpm-main/README.configs.md %{buildroot}%{_sysconfdir}/%{app_name}/README.md
 
 # Install example configuration files
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.postgres.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.postgres.json
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.rocksdb.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.rocksdb.json
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.sqlite.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.sqlite.json
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.mysql.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.mysql.json
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.foundationdb.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.foundationdb.json
+install -D -m 644 %{_builddir}/stalwart-rpm-main/%{app_name}.postgres.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.postgres.json
+install -D -m 644 %{_builddir}/stalwart-rpm-main/%{app_name}.rocksdb.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.rocksdb.json
+install -D -m 644 %{_builddir}/stalwart-rpm-main/%{app_name}.sqlite.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.sqlite.json
+install -D -m 644 %{_builddir}/stalwart-rpm-main/%{app_name}.mysql.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.mysql.json
+install -D -m 644 %{_builddir}/stalwart-rpm-main/%{app_name}.foundationdb.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.foundationdb.json
 
 # Install systemd service
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.service %{buildroot}%{_unitdir}/%{app_name}.service
+install -D -m 644 %{_builddir}/stalwart-rpm-main/%{app_name}.service %{buildroot}%{_unitdir}/%{app_name}.service
 
 %post
 # Set ownership of data directory
