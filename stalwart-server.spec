@@ -84,9 +84,7 @@ Requires:       glibc
 All-in-one Mail & Collaboration server. Secure, scalable and fluent in every protocol (IMAP, JMAP, SMTP, CalDAV, CardDAV, WebDAV).
 
 %prep
-%autosetup -n %{app_name}-%{version}
-
-tar -xzf %{SOURCE1} -C %{_builddir}
+%autosetup
 
 %build
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -119,17 +117,17 @@ install -d -m 755 %{buildroot}%{_docdir}/%{app_name}
 install -D -m 755 %{_builddir}/%{app_name}-%{version}/target/release/%{app_name} %{buildroot}%{_bindir}/%{app_name}
 
 # Install README in config directory
-install -D -m 644 %{_builddir}/stalwart-rpm/README.configs.md %{buildroot}%{_sysconfdir}/%{app_name}/README.md
+install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/README.configs.md %{buildroot}%{_sysconfdir}/%{app_name}/README.md
 
 # Install example configuration files
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.postgres.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.postgres.json
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.rocksdb.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.rocksdb.json
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.sqlite.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.sqlite.json
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.mysql.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.mysql.json
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.foundationdb.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.foundationdb.json
+install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.postgres.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.postgres.json
+install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.rocksdb.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.rocksdb.json
+install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.sqlite.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.sqlite.json
+install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.mysql.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.mysql.json
+install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.foundationdb.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.foundationdb.json
 
 # Install systemd service
-install -D -m 644 %{_builddir}/stalwart-rpm/%{app_name}.service %{buildroot}%{_unitdir}/%{app_name}.service
+install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.service %{buildroot}%{_unitdir}/%{app_name}.service
 
 %post
 # Set ownership of data directory
@@ -165,8 +163,10 @@ fi
 %doc %{_docdir}/%{app_name}/%{app_name}.foundationdb.json
 
 %changelog
-* Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.27-1
-- Fixed: IMAP APPEND/COPY/MOVE and SEARCH RETURN behavior, iTIP VTIMEZONE merging, OAuth loopback URI matching, WebDAV PROPFIND allprop
+* Wed Nov 4 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.2-1
+- Added: OpenPGP (RFC 9580) and S/MIME (RFC 8551) encryption, encryption gateway, external public keys (WKD/VKS/HKP), header protection (RFC 9788), DKIM2 DSN signing and propagation, OAuth scopes, OIDC trustedProvider
+- Changed: DKIM2 algorithm replaced by pure ML-DSA-44, vCard/iCalendar decoding as UTF-8/Windows-1252
+- Fixed: DKIM relaxed body canonicalization, iTip REQUEST sequence handling, IMAP RENAME loop prevention, JMAP Email/queryChanges collapseThreads, OAuth scope validation, milter SMFIC_BODY, search indexing blob handling, and more
 
 * Wed Oct 14 2026 Ante de Baas <antedebaas@users.github.com> - 0.16.26-1
 - Added: sd_notify support, JMAP mailbox operations; Fixed: DNSSEC resolver, RocksDB blob GC, milter end-of-headers, OIDC fallback to email claim, JMAP push notification and VacationResponse bugs
