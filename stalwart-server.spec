@@ -4,8 +4,6 @@ Version:        1.0.2
 Release:        1%{?dist}
 Summary:        All-in-one Mail & Collaboration server. Secure, scalable and fluent in every protocol (IMAP, JMAP, SMTP, CalDAV, CardDAV, WebDAV).
 
-%global packageversion 1.0.0
-
 # Define systemd macros if not provided by systemd-rpm-macros
 # (openEuler and some older distributions don't have this package)
 %{!?_unitdir: %global _unitdir /usr/lib/systemd/system}
@@ -31,7 +29,7 @@ License:        MIT
 Obsoletes:      stalwart < %{version}
 URL:            https://github.com/stalwartlabs/%{app_name}
 Source0:        https://github.com/stalwartlabs/%{app_name}/archive/refs/tags/v%{version}.tar.gz
-Source1:        https://github.com/antedebaas/stalwart-rpm/archive/v%{packageversion}.tar.gz
+Source1:        https://github.com/antedebaas/stalwart-rpm/archive/refs/heads/main.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
