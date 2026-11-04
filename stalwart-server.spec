@@ -26,10 +26,9 @@ fi \
 %{nil}}
 
 License:        MIT
-Obsoletes:      stalwart < %{version}
-URL:            https://github.com/stalwartlabs/%{app_name}
-Source0:        https://github.com/stalwartlabs/%{app_name}/archive/refs/tags/v%{version}.tar.gz
-Source1:        https://github.com/antedebaas/stalwart-rpm/archive/refs/heads/main.tar.gz
+URL:            https://github.com/stalwartlabs/%{name}
+Source0:        https://github.com/stalwartlabs/%{name}/archive/refs/tags/v%{version}.tar.gz
+Source1:        https://forgejo.home.debaas.net/ante/stalwart-rpm/archive/v%{packageversion}.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -82,83 +81,84 @@ Requires:       glibc
 All-in-one Mail & Collaboration server. Secure, scalable and fluent in every protocol (IMAP, JMAP, SMTP, CalDAV, CardDAV, WebDAV).
 
 %prep
-%setup -q -D -n %{app_name}-%{version} -a 1
+%autosetup -n %{name}-%{version}
+tar -xzf %{SOURCE1} -C %{_builddir}
 
 %build
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source "$HOME/.cargo/env"
 
 # Set build environment for optimal compilation
-export CARGO_TARGET_DIR=%{_builddir}/%{app_name}-%{version}/target
+export CARGO_TARGET_DIR=%{_builddir}/%{name}-%{version}/target
 export RUSTFLAGS="$(cat %{_builddir}/flags.txt)"
 
 # Build the release binary
 cargo build --release -p stalwart --no-default-features --features "sqlite postgres mysql rocks s3 redis azure nats enterprise"
 
 %pre
-getent group %{app_name} >/dev/null || groupadd -r %{app_name}
-getent passwd %{app_name} >/dev/null || \
-    useradd -r -g %{app_name} -d %{_sharedstatedir}/%{app_name} \
-    -s /sbin/nologin -c "%{app_name}" %{app_name}
+getent group %{name} >/dev/null || groupadd -r %{name}
+getent passwd %{name} >/dev/null || \
+    useradd -r -g %{name} -d %{_sharedstatedir}/%{name} \
+    -s /sbin/nologin -c "%{name}" %{name}
 
 %install
 # Create data directories
-install -d -m 755 %{buildroot}%{_sysconfdir}/%{app_name}/
-install -d -m 755 %{buildroot}%{_sharedstatedir}/%{app_name}
-install -d -m 755 %{buildroot}%{_sharedstatedir}/%{app_name}/data
-install -d -m 755 %{buildroot}%{_sharedstatedir}/%{app_name}/dumps
-install -d -m 755 %{buildroot}%{_sharedstatedir}/%{app_name}/snapshots
-install -d -m 755 %{buildroot}%{_var}/log/%{app_name}
-install -d -m 755 %{buildroot}%{_docdir}/%{app_name}
+install -d -m 755 %{buildroot}%{_sysconfdir}/%{name}/
+install -d -m 755 %{buildroot}%{_sharedstatedir}/%{name}
+install -d -m 755 %{buildroot}%{_sharedstatedir}/%{name}/data
+install -d -m 755 %{buildroot}%{_sharedstatedir}/%{name}/dumps
+install -d -m 755 %{buildroot}%{_sharedstatedir}/%{name}/snapshots
+install -d -m 755 %{buildroot}%{_var}/log/%{name}
+install -d -m 755 %{buildroot}%{_docdir}/%{name}
 
 # Install binary
-install -D -m 755 %{_builddir}/%{app_name}-%{version}/target/release/%{app_name} %{buildroot}%{_bindir}/%{app_name}
+install -D -m 755 %{_builddir}/%{name}-%{version}/target/release/%{name} %{buildroot}%{_bindir}/%{name}
 
 # Install README in config directory
-install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/README.configs.md %{buildroot}%{_sysconfdir}/%{app_name}/README.md
+install -D -m 644 %{_builddir}/stalwart-rpm/README.configs.md %{buildroot}%{_sysconfdir}/%{name}/README.md
 
 # Install example configuration files
-install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.postgres.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.postgres.json
-install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.rocksdb.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.rocksdb.json
-install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.sqlite.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.sqlite.json
-install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.mysql.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.mysql.json
-install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.foundationdb.json %{buildroot}%{_docdir}/%{app_name}/%{app_name}.foundationdb.json
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.postgres.json %{buildroot}%{_docdir}/%{name}/%{name}.postgres.json
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.rocksdb.json %{buildroot}%{_docdir}/%{name}/%{name}.rocksdb.json
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.sqlite.json %{buildroot}%{_docdir}/%{name}/%{name}.sqlite.json
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.mysql.json %{buildroot}%{_docdir}/%{name}/%{name}.mysql.json
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.foundationdb.json %{buildroot}%{_docdir}/%{name}/%{name}.foundationdb.json
 
 # Install systemd service
-install -D -m 644 %{_builddir}/stalwart-rpm-%{packageversion}/%{app_name}.service %{buildroot}%{_unitdir}/%{app_name}.service
+install -D -m 644 %{_builddir}/stalwart-rpm/%{name}.service %{buildroot}%{_unitdir}/%{name}.service
 
 %post
 # Set ownership of data directory
-chown -R %{app_name}:%{app_name} %{_sharedstatedir}/%{app_name}
-chown %{app_name}:%{app_name} %{_sysconfdir}/%{app_name}
-chown %{app_name}:%{app_name} %{_var}/log/%{app_name}
+chown -R %{name}:%{name} %{_sharedstatedir}/%{name}
+chown %{name}:%{name} %{_sysconfdir}/%{name}
+chown %{name}:%{name} %{_var}/log/%{name}
 if [ ! -f /etc/stalwart/config.json ]; then
     echo "No configuration file found. Please copy an example from /usr/share/doc/stalwart/ to /etc/stalwart/config.json" > /etc/stalwart/config.json.readme
 fi
 
-%systemd_post %{app_name}.service
+%systemd_post %{name}.service
 
 %preun
-%systemd_preun %{app_name}.service
-%{name}
+%systemd_preun %{name}.service
+
 %postun
-%systemd_postun_with_restart %{app_name}.service
+%systemd_postun_with_restart %{name}.service
 
 %files
-%{_bindir}/%{app_name}
-%dir %attr(0755,%{app_name},%{app_name}) %{_var}/log/%{app_name}
-%dir %attr(0755,%{app_name},%{app_name}) %{_sharedstatedir}/%{app_name}
-%dir %attr(0755,%{app_name},%{app_name}) %{_sharedstatedir}/%{app_name}/data
-%dir %attr(0755,%{app_name},%{app_name}) %{_sharedstatedir}/%{app_name}/dumps
-%dir %attr(0755,%{app_name},%{app_name}) %{_sharedstatedir}/%{app_name}/snapshots
-%attr(0644,root,root) %{_sysconfdir}/%{app_name}/README.md
-%ghost %config(noreplace) %attr(0644,%{app_name},%{app_name}) %{_sysconfdir}/%{app_name}/config.json
-%{_unitdir}/%{app_name}.service
-%doc %{_docdir}/%{app_name}/%{app_name}.postgres.json
-%doc %{_docdir}/%{app_name}/%{app_name}.rocksdb.json
-%doc %{_docdir}/%{app_name}/%{app_name}.sqlite.json
-%doc %{_docdir}/%{app_name}/%{app_name}.mysql.json
-%doc %{_docdir}/%{app_name}/%{app_name}.foundationdb.json
+%{_bindir}/%{name}
+%dir %attr(0755,%{name},%{name}) %{_var}/log/%{name}
+%dir %attr(0755,%{name},%{name}) %{_sharedstatedir}/%{name}
+%dir %attr(0755,%{name},%{name}) %{_sharedstatedir}/%{name}/data
+%dir %attr(0755,%{name},%{name}) %{_sharedstatedir}/%{name}/dumps
+%dir %attr(0755,%{name},%{name}) %{_sharedstatedir}/%{name}/snapshots
+%attr(0644,root,root) %{_sysconfdir}/%{name}/README.md
+%ghost %config(noreplace) %attr(0644,%{name},%{name}) %{_sysconfdir}/%{name}/config.json
+%{_unitdir}/%{name}.service
+%doc %{_docdir}/%{name}/%{name}.postgres.json
+%doc %{_docdir}/%{name}/%{name}.rocksdb.json
+%doc %{_docdir}/%{name}/%{name}.sqlite.json
+%doc %{_docdir}/%{name}/%{name}.mysql.json
+%doc %{_docdir}/%{name}/%{name}.foundationdb.json
 
 %changelog
 * Wed Nov 4 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.2-1
