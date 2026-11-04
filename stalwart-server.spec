@@ -84,7 +84,7 @@ Requires:       glibc
 All-in-one Mail & Collaboration server. Secure, scalable and fluent in every protocol (IMAP, JMAP, SMTP, CalDAV, CardDAV, WebDAV).
 
 %prep
-%autosetup
+%autosetup -n %{app_name}-%{version}
 
 %build
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
