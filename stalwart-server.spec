@@ -28,7 +28,7 @@ fi \
 License:        MIT
 URL:            https://github.com/stalwartlabs/%{app_name}
 Source0:        https://github.com/stalwartlabs/%{app_name}/archive/refs/tags/v%{version}.tar.gz
-Source1:        https://github.com/antedebaas/stalwart-rpm-main/archive/main.tar.gz
+Source1:        https://github.com/antedebaas/stalwart-rpm/archive/main.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
