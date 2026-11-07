@@ -1,7 +1,7 @@
 Name:           stalwart-migrate
-Version:        1.0.5
+Version:        1.0.6
 Release:        1%{?dist}
-Summary:        Stalwart v1.0.0 migration tool
+Summary:        Stalwart v1.0.6 migration tool
 
 License:        AGPL-3.0-only OR LicenseRef-SEL
 URL:            https://github.com/stalwartlabs/stalwart-migrate
@@ -68,8 +68,10 @@ export RUSTFLAGS="-Ccodegen-units=1"
 # Ensure we have a proper Cargo.lock
 [ -f Cargo.lock ] || cargo generate-lockfile
 
-# Build with release optimizations
-cargo build --release --verbose --locked
+# Build with release optimizations and all backend features
+# This enables all supported storage backends for migration:
+# rocks (RocksDB), postgres, mysql, sqlite, s3, azure, redis, foundation, enterprise
+cargo build --release --verbose --locked --features "rocks,foundation,postgres,mysql,sqlite,s3,azure,redis,enterprise"
 
 %install
 # Install binary
@@ -91,6 +93,11 @@ install -D -m 644 -t %{buildroot}%{_docdir}/%{name}/LICENSES LICENSES/*
 %doc %{_docdir}/%{name}/LICENSES/*
 
 %changelog
+* Sat Nov 7 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.6-1
+- Updated to v1.0.6 release
+- Enable all storage backend features (rocks, postgres, mysql, sqlite, s3, azure, redis, foundation, enterprise)
+- Fixes "Binary was not compiled with the selected data store backend" error
+
 * Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.5-1
 - Initial package for Stalwart Migrate
 - Built from v1.0.5 release

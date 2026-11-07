@@ -6,8 +6,8 @@ Summary:        Vandelay: the JMAP importer-exporter (and backup tool)
 
 License:        Apache-2.0 OR MIT
 Obsoletes:      vandelay < %{version}
-URL:            https://github.com/stalwartlabs/vandelay
-Source0:        https://github.com/stalwartlabs/vandelay/archive/refs/tags/v%{version}.tar.gz
+URL:            https://github.com/stalwartlabs/%{app_name}
+Source0:        https://github.com/stalwartlabs/%{app_name}/archive/refs/tags/v%{version}.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -64,8 +64,8 @@ install -D -m 755 %{_builddir}/%{app_name}-%{version}/target/release/%{app_name}
 %doc README.md CHANGELOG.md
 
 %changelog
-* Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.14-1
-- Static Dockerfile, HTTP request timeouts on all protocols, Google Takeout Brazilian label mapping and duplicate contact fixes
+* Sat Nov 7 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.14-1
+- Static Dockerfile static build, HTTP request timeouts on all protocols, Google Takeout Brazilian label mapping and duplicate contact fixes
 
 * Wed Oct 14 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.12-1
 - Parallel email export with server-batched batches, IMAP non-selectable parent folder fix, JMAP memory leak on large pages

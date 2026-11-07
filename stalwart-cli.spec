@@ -62,7 +62,7 @@ install -D -m 755 %{_builddir}/cli-%{version}/target/release/%{name} %{buildroot
 %doc README.md CHANGELOG.md
 
 %changelog
-* Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.14-1
+* Sat Nov 7 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.14-1
 - `apply --progress` help text now mentions upsert and reconcile batch progress reporting
 
 * Sun Oct 11 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.13-1

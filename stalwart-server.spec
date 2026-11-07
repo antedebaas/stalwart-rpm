@@ -1,6 +1,6 @@
 Name:           stalwart-server
 %global app_name stalwart
-Version:        1.0.2
+Version:        1.0.3
 Release:        1%{?dist}
 Summary:        All-in-one Mail & Collaboration server. Secure, scalable and fluent in every protocol (IMAP, JMAP, SMTP, CalDAV, CardDAV, WebDAV).
 
@@ -93,8 +93,8 @@ source "$HOME/.cargo/env"
 export CARGO_TARGET_DIR=%{_builddir}/%{app_name}-%{version}/target
 export RUSTFLAGS="$(cat %{_builddir}/flags.txt)"
 
-# Build the release binary
-cargo build --release -p stalwart --no-default-features --features "sqlite postgres mysql rocks s3 redis azure nats enterprise"
+# Build the release binary with all supported backends and features
+cargo build --release -p stalwart --no-default-features --features "sqlite postgres mysql rocks s3 redis azure nats foundationdb zenoh kafka enterprise"
 
 %pre
 getent group %{app_name} >/dev/null || groupadd -r %{app_name}
@@ -162,6 +162,10 @@ fi
 %doc %{_docdir}/%{app_name}/%{app_name}.foundationdb.json
 
 %changelog
+* Sat Nov 7 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.3-1
+- Updated to v1.0.3 release
+- Enable all storage/backend features (sqlite, postgres, mysql, rocks, s3, redis, azure, nats, foundationdb, zenoh, kafka, enterprise)
+
 * Wed Nov 4 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.2-1
 - Added: OpenPGP (RFC 9580) and S/MIME (RFC 8551) encryption, encryption gateway, external public keys (WKD/VKS/HKP), header protection (RFC 9788), DKIM2 DSN signing and propagation, OAuth scopes, OIDC trustedProvider
 - Changed: DKIM2 algorithm replaced by pure ML-DSA-44, vCard/iCalendar decoding as UTF-8/Windows-1252

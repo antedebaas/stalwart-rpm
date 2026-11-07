@@ -143,7 +143,7 @@ exit 0
 %doc README.md CHANGELOG.md
 
 %changelog
-* Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.5-1
+* Sat Nov 7 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.5-1
 - Replaced base64 with encodify, honored HTTP route fallbacks, improved login
 delay resolution via cache invalidate endpoints, and fixed sample config
 startup validation
