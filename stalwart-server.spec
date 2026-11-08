@@ -58,6 +58,11 @@ BuildRequires:  clang-devel
 %endif
 %endif
 
+# FoundationDB (optional - only on distributions that have it)
+%if 0%{?fedora} || 0%{?rhel} >= 10 || 0%{?suse_version}
+BuildRequires:  foundationdb-devel
+%endif
+
 # Only build on supported architectures for Rust
 ExcludeArch:    i686 s390 %{power64}
 
@@ -94,7 +99,17 @@ export CARGO_TARGET_DIR=%{_builddir}/%{app_name}-%{version}/target
 export RUSTFLAGS="$(cat %{_builddir}/flags.txt)"
 
 # Build the release binary with all supported backends and features
-cargo build --release -p stalwart --no-default-features --features "sqlite postgres mysql rocks s3 redis azure nats foundationdb zenoh kafka enterprise"
+# Conditionally enable foundationdb based on available external libraries:
+# - foundationdb: requires libfdb_c (foundationdb-devel package)
+# - kafka: uses bundled librdkafka, zenoh: bundled (no external deps)
+FEATURES="sqlite postgres mysql rocks s3 redis azure nats enterprise kafka zenoh"
+
+# Add foundationdb if libfdb_c is available (pkg-config name: foundationdb)
+if pkg-config --exists foundationdb || rpm -q foundationdb-devel >/dev/null 2>&1; then
+    FEATURES="$FEATURES foundationdb"
+fi
+
+cargo build --release -p stalwart --no-default-features --features "$FEATURES"
 
 %pre
 getent group %{app_name} >/dev/null || groupadd -r %{app_name}
@@ -164,7 +179,7 @@ fi
 %changelog
 * Sat Nov 7 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.3-1
 - Updated to v1.0.3 release
-- Enable all storage/backend features (sqlite, postgres, mysql, rocks, s3, redis, azure, nats, foundationdb, zenoh, kafka, enterprise)
+- Enable all storage/backend features (sqlite, postgres, mysql, rocks, s3, redis, azure, nats, enterprise, kafka, zenoh); foundationdb conditionally enabled (requires foundationdb-devel)
 
 * Wed Nov 4 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.2-1
 - Added: OpenPGP (RFC 9580) and S/MIME (RFC 8551) encryption, encryption gateway, external public keys (WKD/VKS/HKP), header protection (RFC 9788), DKIM2 DSN signing and propagation, OAuth scopes, OIDC trustedProvider

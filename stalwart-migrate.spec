@@ -35,6 +35,11 @@ BuildRequires:  clang-devel
 %endif
 %endif
 
+# FoundationDB (optional - only on distributions that have it)
+%if 0%{?fedora} || 0%{?rhel} >= 10 || 0%{?suse_version}
+BuildRequires:  foundationdb-devel
+%endif
+
 # Only build on supported architectures for Rust
 ExcludeArch:    i686 s390 %{power64}
 
@@ -69,9 +74,17 @@ export RUSTFLAGS="-Ccodegen-units=1"
 [ -f Cargo.lock ] || cargo generate-lockfile
 
 # Build with release optimizations and all backend features
-# This enables all supported storage backends for migration:
-# rocks (RocksDB), postgres, mysql, sqlite, s3, azure, redis, foundation, enterprise
-cargo build --release --verbose --locked --features "rocks,foundation,postgres,mysql,sqlite,s3,azure,redis,enterprise"
+# Conditionally enable foundationdb based on available external libraries:
+# - foundationdb/foundation: requires libfdb_c (foundationdb-devel package)
+# - rocks, postgres, mysql, sqlite, s3, azure, redis, enterprise: no external deps
+FEATURES="rocks postgres mysql sqlite s3 azure redis enterprise"
+
+# Add foundationdb if libfdb_c is available (pkg-config name: foundationdb)
+if pkg-config --exists foundationdb || rpm -q foundationdb-devel >/dev/null 2>&1; then
+    FEATURES="$FEATURES foundation"
+fi
+
+cargo build --release --verbose --locked --features "$FEATURES"
 
 %install
 # Install binary
@@ -95,8 +108,7 @@ install -D -m 644 -t %{buildroot}%{_docdir}/%{name}/LICENSES LICENSES/*
 %changelog
 * Sat Nov 7 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.6-1
 - Updated to v1.0.6 release
-- Enable all storage backend features (rocks, postgres, mysql, sqlite, s3, azure, redis, foundation, enterprise)
-- Fixes "Binary was not compiled with the selected data store backend" error
+- Enable all storage/backend features (rocks, postgres, mysql, sqlite, s3, azure, redis, enterprise); foundationdb conditionally enabled (requires foundationdb-devel)
 
 * Tue Nov 3 2026 Ante de Baas <antedebaas@users.github.com> - 1.0.5-1
 - Initial package for Stalwart Migrate
