@@ -35,11 +35,6 @@ BuildRequires:  clang-devel
 %endif
 %endif
 
-# FoundationDB (optional - only on distributions that have it)
-%if 0%{?fedora} || 0%{?rhel} >= 10 || 0%{?suse_version}
-BuildRequires:  foundationdb-devel
-%endif
-
 # Only build on supported architectures for Rust
 ExcludeArch:    i686 s390 %{power64}
 
